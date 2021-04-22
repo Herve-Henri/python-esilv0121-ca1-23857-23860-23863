@@ -3,7 +3,7 @@
 #23863 Benjamin CONSTANT
 
 def menu():
-    print('Hello les bgs')
+    print('Hello les bgs sa mere')
     print('****************Welcome to Dorset-Bank****************')
     print('***Please specify whether you are a user or employee**')
     choice=input("""
