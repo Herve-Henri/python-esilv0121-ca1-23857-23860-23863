@@ -20,6 +20,9 @@ class BankAccount(object):
         return self.balance
 
     #Methods
+    def toString():
+        return "Account name: "+self.name+" Account balance:"+self.balance+" €"
+
     def Add(self, n):
         self.balance+=n
 

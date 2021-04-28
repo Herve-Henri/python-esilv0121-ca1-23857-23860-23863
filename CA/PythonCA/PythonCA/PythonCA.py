@@ -1,3 +1,9 @@
+from Costumer import Costumer
+from SavingsAccount import SavingsAccount
+from CurrentAccount import CurrentAccount
+
+
+
 def Employee_login():
     #extra anti brute force measure (made for fun)
     n=0
@@ -36,4 +42,9 @@ def main_menu():
         print("You must enter either 1 or 2. \nPlease try again")
         main_menu()
 
-main_menu()
+def testcostumer():
+    c1=Costumer("Hervé-Henri","Houzard","23857@student.dorset-college.ie")
+    print(c1.toString())
+
+#main_menu()
+testcostumer()
