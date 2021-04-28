@@ -1,13 +1,5 @@
 class BankAccount(object):
     #Constructors
-    def __init__(self):
-        self.name="Unnamed"
-        self.balance=0.00
-
-    def __init__(self,name):
-        self.name=name
-        self.balance=0.00
-
     def __init__(self,name,balance):
         self.name=name
         self.balance=balance
@@ -20,8 +12,8 @@ class BankAccount(object):
         return self.balance
 
     #Methods
-    def toString():
-        return "Account name: "+self.name+" Account balance:"+self.balance+" €"
+    def toString(self):
+        return "Account name: "+self.name+"   Account balance:"+str(self.balance)+" €"
 
     def Add(self, n):
         self.balance+=n

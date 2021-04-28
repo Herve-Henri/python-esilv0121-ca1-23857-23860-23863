@@ -1,6 +1,38 @@
+from SavingsAccount import SavingsAccount
+from CurrentAccount import CurrentAccount
+
 class Costumer(object):
+    #Constructor
+    def __init__(self,firstname,lastname,email):
+        self.firstname=firstname
+        self.lastname=lastname
+        self.email=email
+        self.accountnumber=self.GenerateAccountNumber(firstname,lastname)
+        self.pincode=self.GeneratePinCode(firstname,lastname)
+        self.savings=SavingsAccount(self.accountnumber+"-savings",0.00)
+        self.current=CurrentAccount(self.accountnumber+"-current",0.00)
+
+    #Basic Properties
+    def Fullname():
+        return self.firstname+" "+self.lastname
+
+    def Email():
+        return self.email
+
+    def Accountnumber():
+        return self.accountnumber
+
+    def Pincode():
+        return self.pincode
+
+    def Savings():
+        return self.savings
+
+    def Current():
+        return self.current
+
     #Methods
-    def GetAlphabPosition(letter):
+    def GetAlphabPosition(self,letter):
         #Note: We aren't using the function string.ascii_lowercase.index because we want a string and not an integer
         position="-1"
         if(letter=='A' or letter=='a'):
@@ -57,48 +89,20 @@ class Costumer(object):
             position=("26")
         return position
 
-    def GenerateAccountNumber(firstname,lastname):
-        an=(firstname[0]+lastname[0]+"-"+str((firstname+lastname).length)+"-"+GetAlphabPosition(firstname[0])+"-"
-           + GetAlphabPosition(lastname[0]))
+    def GenerateAccountNumber(self,firstname,lastname):
+        an=(firstname[0]+lastname[0]+"-"+str(len(firstname+lastname))+"-"+self.GetAlphabPosition(firstname[0])+"-"
+           + self.GetAlphabPosition(lastname[0]))
         return an
 
-    def GeneratePinCode(firstname,lastname):
-        pin=GetAlphabPosition(firstname[0])+GetAlphabPosition(lastname[0])
+    def GeneratePinCode(self,firstname,lastname):
+        pin=self.GetAlphabPosition(firstname[0])+self.GetAlphabPosition(lastname[0])
         return pin
 
-    def toString():
-        return ("Firstname: "+self.firstname+" Lastname: "+self.lastname+" Email: "+self.email
-                + "\nAccount number: "+self.accountnumber+" Pin code: "+self.pincode 
-                + "\nSavings account: "+self.savings.toString()+" Current account: "+self.current.toString())
-
-    #Constructor
-    def __init__(self,firstname,lastname,email):
-        self.firstname=firstname
-        self.lastname=lastname
-        self.email=email
-        self.accountnumber=GenerateAccountNumber(firstname,lastname)
-        self.pincode=GeneratePincode(firstname,lastname)
-        self.savings=SavingsAccount(accountnumber+"-savings")
-        self.current=CurrentAccount(accountnumber+"-current")
-
-    #Basic Properties
-    def Fullname():
-        return self.firstname+" "+self.lastname
-
-    def Email():
-        return self.email
-
-    def Accountnumber():
-        return self.accountnumber
-
-    def Pincode():
-        return self.pincode
-
-    def Savings():
-        return self.savings
-
-    def Current():
-        return self.current
+    def toString(self):
+        return ("Firstname: "+self.firstname+"    Lastname: "+self.lastname+"    Email: "+self.email
+                + "\nAccount number: "+self.accountnumber+"    Pin code: "+self.pincode 
+                + "\nSavings account: "+self.savings.toString()
+                + "\nCurrent account: "+self.current.toString())
    
 
     
