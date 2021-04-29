@@ -90,7 +90,7 @@ class Costumer(object):
         return position
 
     def GenerateAccountNumber(self,firstname,lastname):
-        an=(firstname[0]+lastname[0]+"-"+str(len(firstname+lastname))+"-"+self.GetAlphabPosition(firstname[0])+"-"
+        an=(firstname[0].lower()+lastname[0].lower()+"-"+str(len(firstname+lastname))+"-"+self.GetAlphabPosition(firstname[0])+"-"
            + self.GetAlphabPosition(lastname[0]))
         return an
 

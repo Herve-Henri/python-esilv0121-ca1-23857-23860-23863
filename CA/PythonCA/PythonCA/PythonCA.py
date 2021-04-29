@@ -1,8 +1,34 @@
 from Costumer import Costumer
 from SavingsAccount import SavingsAccount
 from CurrentAccount import CurrentAccount
+import os
+
+def CheckValidName(name):
+    #A name is valid if it is less than 30 characters in length and doesn't contain any special character apart from '-'
+    valid = True
+    if(len(name)>30):
+        valid=False
+    for character in name:
+        if(character.isalpha()==False):
+            if character!="-":
+                valid=False
+    return valid
+
+def CheckValidEmail(email):
+    #An email is valid if it is less than 50 characters in length and contains the character '@'
+    valid = True
+    if(len(email)>50):
+        valid=False
+    if(email.find('@')==-1):
+        valid=False
+    return valid
 
 
+def CreateCostumerAccount(firstname, lastname, email):
+    if(CheckValidName(firstname)==True and CheckValidName(lastname)==True and CheckValidEmail(email)==True):
+        os.mkdir("Costumers/"+firstname+" "+lastname)
+    else:
+        print("Cannot create a costumer account. Please check your inputs.")
 
 def Employee_login():
     #extra anti brute force measure (made for fun)
@@ -71,5 +97,12 @@ def testcostumer():
     print(c1.toString())
 testcostumer()
 
-main_menu()
+def testdirectory():
+    os.mkdir("example_directory/")
+#testdirectory()
+
+#CreateCostumerAccount("Donna","Madonna","madonna.donna@gmail.com")
+#print(CheckValidName("Hervé-Henri"))
+#print(CheckValidEmail("23857@student.dorset-college.ie"))
+#main_menu()
 

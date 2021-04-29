@@ -13,16 +13,16 @@ class BankAccount(object):
 
     #Methods
     def toString(self):
-        return "Account name: "+self.name+"   Account balance:"+str(self.balance)+" €"
+        return "Account name: "+self._name+"   Account balance:"+str(self._balance)+" €"
 
     def Add(self, n):
-        self.balance+=n
+        self._balance+=n
 
     def Withdraw(self, n):
-        if(self.balance-n<0):
+        if(self._balance-n<0):
             println("The account balance cannot be negative, please withdraw a lower amount.")
         else:
-            self.balance-=n
+            self._balance-=n
 
 
 
