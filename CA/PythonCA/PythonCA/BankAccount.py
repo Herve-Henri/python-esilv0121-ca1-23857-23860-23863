@@ -5,10 +5,10 @@ class BankAccount(object):
         self._balance=balance
 
     #Properties
-    def Name():
+    def Name(self):
         return self._name
 
-    def Balance():
+    def Balance(self):
         return self._balance
 
     #Methods

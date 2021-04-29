@@ -13,22 +13,22 @@ class Costumer(object):
         self.__current=CurrentAccount(self.__accountnumber+"-current",0.00)
 
     #Basic Properties
-    def Fullname():
+    def Fullname(self):
         return self.__firstname+" "+self.__lastname
 
-    def Email():
+    def Email(self):
         return self.__email
 
-    def Accountnumber():
+    def Accountnumber(self):
         return self.__accountnumber
 
-    def Pincode():
+    def Pincode(self):
         return self.__pincode
 
-    def Savings():
+    def Savings(self):
         return self.__savings
 
-    def Current():
+    def Current(self):
         return self.__current
 
     #Methods
@@ -58,9 +58,9 @@ class Costumer(object):
         elif(letter=='K' or letter=='k'):
             position("11")
         elif(letter=='L' or letter=='l'):
-            position("12")
+            position=("12")
         elif(letter=='M' or letter=='m'):
-            position("13")
+            position=("13")
         elif(letter=='N' or letter=='n'):
             position=("14")
         elif(letter=='O' or letter=='o'):

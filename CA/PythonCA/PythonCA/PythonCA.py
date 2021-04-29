@@ -27,6 +27,17 @@ def CheckValidEmail(email):
 def CreateCostumerAccount(firstname, lastname, email):
     if(CheckValidName(firstname)==True and CheckValidName(lastname)==True and CheckValidEmail(email)==True):
         os.mkdir("Costumers/"+firstname+" "+lastname)
+        c=Costumer(firstname,lastname,email)
+        details=open("Costumers/"+firstname+" "+lastname+"/"+firstname+" "+lastname+"-details.txt","w+")
+        details.write(c.toString())
+        details.close()
+        savings=open("Costumers/"+firstname+" "+lastname+"/"+c.Accountnumber()+"-savings.txt","w+")
+        savings.write(c.Savings().toString())
+        savings.close()
+        current=open("Costumers/"+firstname+" "+lastname+"/"+c.Accountnumber()+"-current.txt","w+")
+        current.write(c.Savings().toString())
+        current.close()
+        print("Costumer account successfully created.")
     else:
         print("Cannot create a costumer account. Please check your inputs.")
 
@@ -95,13 +106,13 @@ def main_menu():
 def testcostumer():
     c1=Costumer("Hervé-Henri","Houzard","23857@student.dorset-college.ie")
     print(c1.toString())
-testcostumer()
+#testcostumer()
 
 def testdirectory():
     os.mkdir("example_directory/")
 #testdirectory()
 
-#CreateCostumerAccount("Donna","Madonna","madonna.donna@gmail.com")
+CreateCostumerAccount("Donna","Madonna","madonna.donna@gmail.com")
 #print(CheckValidName("Hervé-Henri"))
 #print(CheckValidEmail("23857@student.dorset-college.ie"))
 #main_menu()
