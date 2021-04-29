@@ -4,32 +4,32 @@ from CurrentAccount import CurrentAccount
 class Costumer(object):
     #Constructor
     def __init__(self,firstname,lastname,email):
-        self.firstname=firstname
-        self.lastname=lastname
-        self.email=email
-        self.accountnumber=self.GenerateAccountNumber(firstname,lastname)
-        self.pincode=self.GeneratePinCode(firstname,lastname)
-        self.savings=SavingsAccount(self.accountnumber+"-savings",0.00)
-        self.current=CurrentAccount(self.accountnumber+"-current",0.00)
+        self.__firstname=firstname
+        self.__lastname=lastname
+        self.__email=email
+        self.__accountnumber=self.GenerateAccountNumber(firstname,lastname)
+        self.__pincode=self.GeneratePinCode(firstname,lastname)
+        self.__savings=SavingsAccount(self.__accountnumber+"-savings",0.00)
+        self.__current=CurrentAccount(self.__accountnumber+"-current",0.00)
 
     #Basic Properties
     def Fullname():
-        return self.firstname+" "+self.lastname
+        return self.__firstname+" "+self.__lastname
 
     def Email():
-        return self.email
+        return self.__email
 
     def Accountnumber():
-        return self.accountnumber
+        return self.__accountnumber
 
     def Pincode():
-        return self.pincode
+        return self.__pincode
 
     def Savings():
-        return self.savings
+        return self.__savings
 
     def Current():
-        return self.current
+        return self.__current
 
     #Methods
     def GetAlphabPosition(self,letter):
@@ -99,10 +99,10 @@ class Costumer(object):
         return pin
 
     def toString(self):
-        return ("Firstname: "+self.firstname+"    Lastname: "+self.lastname+"    Email: "+self.email
-                + "\nAccount number: "+self.accountnumber+"    Pin code: "+self.pincode 
-                + "\nSavings account: "+self.savings.toString()
-                + "\nCurrent account: "+self.current.toString())
+        return ("Firstname: "+self.__firstname+"    Lastname: "+self.__lastname+"    Email: "+self.__email
+                + "\nAccount number: "+self.__accountnumber+"    Pin code: "+self.__pincode 
+                + "\nSavings account: "+self.__savings.toString()
+                + "\nCurrent account: "+self.__current.toString())
    
 
     

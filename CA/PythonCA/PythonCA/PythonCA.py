@@ -69,7 +69,7 @@ def main_menu():
 def testcostumer():
     c1=Costumer("Hervé-Henri","Houzard","23857@student.dorset-college.ie")
     print(c1.toString())
-#testcostumer()
+testcostumer()
 
 main_menu()
 
