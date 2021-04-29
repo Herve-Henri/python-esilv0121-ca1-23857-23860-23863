@@ -2,6 +2,7 @@ from Costumer import Costumer
 from SavingsAccount import SavingsAccount
 from CurrentAccount import CurrentAccount
 import os
+from os import path
 
 def CheckValidName(name):
     #A name is valid if it is less than 30 characters in length and doesn't contain any special character apart from '-'
@@ -23,9 +24,34 @@ def CheckValidEmail(email):
         valid=False
     return valid
 
-
-def CreateCostumerAccount(firstname, lastname, email):
-    if(CheckValidName(firstname)==True and CheckValidName(lastname)==True and CheckValidEmail(email)==True):
+def CreateCostumerAccount():
+    firstname=input("Please enter the costumer's firstname.\n")
+    while(CheckValidName(firstname)==False):
+        firstname=input("This name is not valid, please enter a valid name.\n(Or enter 0 to go back to the Employee menu.)\n")
+        if(firstname=="0"):
+            print("")
+            Employee_menu()
+            return
+    lastname=input("Please enter the costumer's lastname.\n")
+    while(CheckValidName(lastname)==False):
+        lastname=input("This name is not valid, please enter a valid name.\n(Or enter 0 to go back to the Employee menu.)\n")
+        if(lastname=="0"):
+            print("")
+            Employee_menu()
+            return
+    email=input("Please enter the costumer's email.\n")
+    while(CheckValidEmail(email)==False):
+        email=input("This name is not valid, please enter a valid name.\n(Or enter 0 to go back to the Employee menu.)\n")
+        if(email=="0"):
+            print("")
+            Employee_menu()
+            return
+    if(path.exists("Costumers/"+firstname+" "+lastname)==True):
+        print("This costumer is already registered. Going back to the Employee menu")
+        print("")
+        Employee_menu()
+        return
+    else:
         os.mkdir("Costumers/"+firstname+" "+lastname)
         c=Costumer(firstname,lastname,email)
         details=open("Costumers/"+firstname+" "+lastname+"/"+firstname+" "+lastname+"-details.txt","w+")
@@ -38,8 +64,6 @@ def CreateCostumerAccount(firstname, lastname, email):
         current.write(c.Savings().toString())
         current.close()
         print("Costumer account successfully created.")
-    else:
-        print("Cannot create a costumer account. Please check your inputs.")
 
 def Employee_login():
     #extra anti brute force measure (made for fun)
@@ -54,7 +78,7 @@ def Employee_login():
             n+=1
             if(n==4):
                 print("Too many wrong entries. Access locked.")  
-                return;
+                return
             else:
                 print("Incorrect password. "+str(4-n)+" attempt(s) remaining.")
                 choice=input("")
@@ -70,8 +94,7 @@ def Employee_menu():
                +"\n 4:Change a costumer's bank account balance"
                +"\n 5:Log out\n")
     if choice=="1":
-        print("nothing for now")
-        #CreateCostumerAccount(firstname,lastname,email)
+        CreateCostumerAccount()
     elif choice=="2":
         print("nothing for now")
         #DeleteCostumerAccount(accountnumber)
@@ -112,7 +135,7 @@ def testdirectory():
     os.mkdir("example_directory/")
 #testdirectory()
 
-CreateCostumerAccount("Donna","Madonna","madonna.donna@gmail.com")
+CreateCostumerAccount2()
 #print(CheckValidName("Hervé-Henri"))
 #print(CheckValidEmail("23857@student.dorset-college.ie"))
 #main_menu()
