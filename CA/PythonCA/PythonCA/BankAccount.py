@@ -1,15 +1,15 @@
 class BankAccount(object):
     #Constructors
     def __init__(self,name,balance):
-        self.name=name
-        self.balance=balance
+        self._name=name
+        self._balance=balance
 
     #Properties
     def Name():
-        return self.name
+        return self._name
 
     def Balance():
-        return self.balance
+        return self._balance
 
     #Methods
     def toString(self):
