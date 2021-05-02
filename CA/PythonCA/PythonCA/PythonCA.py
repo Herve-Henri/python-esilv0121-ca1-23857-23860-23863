@@ -146,7 +146,6 @@ def Employee_menu():
     elif choice=="2":
         DeleteCostumerAccount()
     elif(choice=="3"):
-        print("nothing for now")
         #GetCostumerDetails(accountnumber)
     elif(choice=="4"):
         print("nothing for now")
