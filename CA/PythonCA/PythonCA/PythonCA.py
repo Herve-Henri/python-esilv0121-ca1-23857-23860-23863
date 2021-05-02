@@ -3,7 +3,19 @@ from SavingsAccount import SavingsAccount
 from CurrentAccount import CurrentAccount
 import os, glob
 import shutil
+import pickle
 from os import path
+
+#Loading our dynamic costumer database first
+if path.exists('costumers.pkl'):
+    with open('costumers.pkl','rb') as f:
+            CostumerList = pickle.load(f)
+else:
+    CostumerList = []
+
+def savecostumerDB():
+    with open('costumers.pkl','wb') as f:
+        pickle.dump(CostumerList, f)
 
 def CheckValidName(name):
     #A name is valid if it is less than 30 characters in length and doesn't contain any special character apart from '-'
@@ -55,6 +67,8 @@ def CreateCostumerAccount():
     else:
         os.mkdir("Costumers/"+firstname+" "+lastname)
         c=Costumer(firstname,lastname,email)
+        CostumerList.append(c)
+        savecosavecostumerDB()
         details=open("Costumers/"+firstname+" "+lastname+"/"+firstname+" "+lastname+"-details.txt","w+")
         details.write(c.toString())
         details.close()
@@ -89,30 +103,21 @@ def DeleteCostumerAccount():
         Employee_menu()
         return
     else:
-        an=Costumer.GenerateAccountNumber(firstname,lastname)
-        cond1 = False
-        cond2 = False
-        savings=open("Costumers/"+firstname+" "+lastname+"/"+an+"-savings.txt","r")
-        data=savings.readline()
-        if (data[52: 55:]=="0.0"):
-            cond1=True
-        savings.close()
-        current=open("Costumers/"+firstname+" "+lastname+"/"+an+"-current.txt","r")
-        data=current.readline()
-        if (data[52: 55:]=="0.0"):
-            cond2=True
-        current.close()
-        if(cond1==True and cond2==True):
-            shutil.rmtree("Costumers/"+firstname+" "+lastname)
-            print("The costumer "+firstname+" "+lastname+" was successfully deleted.\nGoing back to the Employee menu")
-            print("")
-            Employee_menu()
-            return
-        else:
-            print("Cannot delete that costumer, check their account balances.\nGoing back to the Employee menu")
-            print("")
-            Employee_menu()
-            return
+        for Costumer in CostumerList:
+            if(Costumer.Firstname()==firstname and Costumer.Lastname()==lastname):
+                if(Costumer.Savings().Balance()==0.00 and Costumer.Current().Balance()==0.00):
+                    shutil.rmtree("Costumers/"+firstname+" "+lastname)
+                    CostumerList.remove(Costumer)
+                    savecostumerDB()
+                    print("The costumer "+firstname+" "+lastname+" was successfully deleted.\nGoing back to the Employee menu")
+                    print("")
+                    Employee_menu()
+                    return
+                else:
+                    print("Cannot delete that costumer, check their account balances.\nGoing back to the Employee menu")
+                    print("")
+                    Employee_menu()
+                    return
 
 def Employee_login():
     #extra anti brute force measure (made for fun)
@@ -146,6 +151,7 @@ def Employee_menu():
     elif choice=="2":
         DeleteCostumerAccount()
     elif(choice=="3"):
+        print("nothing for now")
         #GetCostumerDetails(accountnumber)
     elif(choice=="4"):
         print("nothing for now")
@@ -181,8 +187,13 @@ def testdirectory():
     os.mkdir("example_directory/")
 #testdirectory()
 
+def pickletest():
+    for Costumer in CostumerList:
+        print(Costumer.toString())
+
 #print(CheckValidName("Hervé-Henri"))
 #print(CheckValidEmail("23857@student.dorset-college.ie"))
+pickletest()
 main_menu()
 
 

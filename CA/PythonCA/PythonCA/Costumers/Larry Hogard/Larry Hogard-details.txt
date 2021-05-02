@@ -1,0 +1,4 @@
+Firstname: Larry    Lastname: Hogard    Email: l.hogard@gmail.com
+Account number: lh-11-12-08    Pin code: 1208
+Savings account: Account name: lh-11-12-08-savings   Account balance:0.0 €
+Current account: Account name: lh-11-12-08-current   Account balance:0.0 €

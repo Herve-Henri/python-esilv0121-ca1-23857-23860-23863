@@ -1,0 +1,4 @@
+Firstname: Lex    Lastname: Faro    Email: L.faro@gmail.com
+Account number: lf-7-12-06    Pin code: 1206
+Savings account: Account name: lf-7-12-06-savings   Account balance:0.0 €
+Current account: Account name: lf-7-12-06-current   Account balance:0.0 €

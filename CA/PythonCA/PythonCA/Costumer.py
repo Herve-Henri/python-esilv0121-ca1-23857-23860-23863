@@ -13,8 +13,14 @@ class Costumer(object):
         self.__current=CurrentAccount(self.__accountnumber+"-current",0.00)
 
     #Basic Properties
-    def Fullname(self):
+    def FullName(self):
         return self.__firstname+" "+self.__lastname
+
+    def Firstname(self):
+        return self.__firstname
+
+    def Lastname(self):
+        return self.__lastname
 
     def Email(self):
         return self.__email
