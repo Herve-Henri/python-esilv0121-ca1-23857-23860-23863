@@ -7,8 +7,8 @@ class Costumer(object):
         self.__firstname=firstname
         self.__lastname=lastname
         self.__email=email
-        self.__accountnumber=self.GenerateAccountNumber(firstname,lastname)
-        self.__pincode=self.GeneratePinCode(firstname,lastname)
+        self.__accountnumber=Costumer.GenerateAccountNumber(firstname,lastname)
+        self.__pincode=Costumer.GeneratePinCode(firstname,lastname)
         self.__savings=SavingsAccount(self.__accountnumber+"-savings",0.00)
         self.__current=CurrentAccount(self.__accountnumber+"-current",0.00)
 
@@ -32,7 +32,7 @@ class Costumer(object):
         return self.__current
 
     #Methods
-    def GetAlphabPosition(self,letter):
+    def GetAlphabPosition(letter):
         #Note: We aren't using the function string.ascii_lowercase.index because we want a string and not an integer
         position="-1"
         if(letter=='A' or letter=='a'):
@@ -89,13 +89,13 @@ class Costumer(object):
             position=("26")
         return position
 
-    def GenerateAccountNumber(self,firstname,lastname):
-        an=(firstname[0].lower()+lastname[0].lower()+"-"+str(len(firstname+lastname))+"-"+self.GetAlphabPosition(firstname[0])+"-"
-           + self.GetAlphabPosition(lastname[0]))
+    def GenerateAccountNumber(firstname,lastname):
+        an=(firstname[0].lower()+lastname[0].lower()+"-"+str(len(firstname+lastname))+"-"+Costumer.GetAlphabPosition(firstname[0])+"-"
+           + Costumer.GetAlphabPosition(lastname[0]))
         return an
 
-    def GeneratePinCode(self,firstname,lastname):
-        pin=self.GetAlphabPosition(firstname[0])+self.GetAlphabPosition(lastname[0])
+    def GeneratePinCode(firstname,lastname):
+        pin=Costumer.GetAlphabPosition(firstname[0])+Costumer.GetAlphabPosition(lastname[0])
         return pin
 
     def toString(self):

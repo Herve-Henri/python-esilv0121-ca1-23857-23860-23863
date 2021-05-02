@@ -1,7 +1,8 @@
 from Costumer import Costumer
 from SavingsAccount import SavingsAccount
 from CurrentAccount import CurrentAccount
-import os
+import os, glob
+import shutil
 from os import path
 
 def CheckValidName(name):
@@ -61,9 +62,57 @@ def CreateCostumerAccount():
         savings.write(c.Savings().toString())
         savings.close()
         current=open("Costumers/"+firstname+" "+lastname+"/"+c.Accountnumber()+"-current.txt","w+")
-        current.write(c.Savings().toString())
+        current.write(c.Current().toString())
         current.close()
-        print("Costumer account successfully created.")
+        print("Costumer account successfully created. Going back to the Employee menu")
+        print("")
+        Employee_menu()
+
+def DeleteCostumerAccount():
+    firstname=input("Please enter the costumer's firstname.\n")
+    while(CheckValidName(firstname)==False):
+        firstname=input("This name is not valid, please enter a valid name.\n(Or enter 0 to go back to the Employee menu.)\n")
+        if(firstname=="0"):
+            print("")
+            Employee_menu()
+            return
+    lastname=input("Please enter the costumer's lastname.\n")
+    while(CheckValidName(lastname)==False):
+        lastname=input("This name is not valid, please enter a valid name.\n(Or enter 0 to go back to the Employee menu.)\n")
+        if(lastname=="0"):
+            print("")
+            Employee_menu()
+            return
+    if(path.exists("Costumers/"+firstname+" "+lastname)==False):
+        print("This costumer is not registered. Going back to the Employee menu")
+        print("")
+        Employee_menu()
+        return
+    else:
+        an=Costumer.GenerateAccountNumber(firstname,lastname)
+        cond1 = False
+        cond2 = False
+        savings=open("Costumers/"+firstname+" "+lastname+"/"+an+"-savings.txt","r")
+        data=savings.readline()
+        if (data[52: 55:]=="0.0"):
+            cond1=True
+        savings.close()
+        current=open("Costumers/"+firstname+" "+lastname+"/"+an+"-current.txt","r")
+        data=current.readline()
+        if (data[52: 55:]=="0.0"):
+            cond2=True
+        current.close()
+        if(cond1==True and cond2==True):
+            shutil.rmtree("Costumers/"+firstname+" "+lastname)
+            print("The costumer "+firstname+" "+lastname+" was successfully deleted.\nGoing back to the Employee menu")
+            print("")
+            Employee_menu()
+            return
+        else:
+            print("Cannot delete that costumer, check their account balances.\nGoing back to the Employee menu")
+            print("")
+            Employee_menu()
+            return
 
 def Employee_login():
     #extra anti brute force measure (made for fun)
@@ -71,7 +120,6 @@ def Employee_login():
     print("Please enter the login password:")
     choice=input("")
     if choice=="A1234":
-        print("nothing for now")
         Employee_menu()
     else:
         while(choice !="A1234"):
@@ -96,8 +144,7 @@ def Employee_menu():
     if choice=="1":
         CreateCostumerAccount()
     elif choice=="2":
-        print("nothing for now")
-        #DeleteCostumerAccount(accountnumber)
+        DeleteCostumerAccount()
     elif(choice=="3"):
         print("nothing for now")
         #GetCostumerDetails(accountnumber)
@@ -135,8 +182,8 @@ def testdirectory():
     os.mkdir("example_directory/")
 #testdirectory()
 
-CreateCostumerAccount2()
 #print(CheckValidName("Hervé-Henri"))
 #print(CheckValidEmail("23857@student.dorset-college.ie"))
-#main_menu()
+main_menu()
+
 

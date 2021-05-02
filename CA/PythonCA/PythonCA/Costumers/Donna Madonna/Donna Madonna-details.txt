@@ -1,4 +1,0 @@
-Firstname: Donna    Lastname: Madonna    Email: madonna.donna@gmail.com
-Account number: dm-12-04-13    Pin code: 0413
-Savings account: Account name: dm-12-04-13-savings   Account balance:0.0 €
-Current account: Account name: dm-12-04-13-current   Account balance:0.0 €
