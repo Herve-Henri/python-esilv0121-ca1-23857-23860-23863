@@ -119,6 +119,11 @@ def DeleteCostumerAccount():
                     Employee_menu()
                     return
 
+def GetCostumerList():
+    for Costumer in CostumerList:
+        print(Costumer.Firstname()+" "+Costumer.Lastname()+"  account number:"+Costumer.Accountnumber()+"  current:"
+              + str(Costumer.Current().Balance())+ "  savings:"+str(Costumer.Savings().Balance()))
+
 def Employee_login():
     #extra anti brute force measure (made for fun)
     n=0
@@ -143,7 +148,7 @@ def Employee_menu():
     choice=input("What action do you wish to do:"
                +"\n 1:Create a new costumer account"
                +"\n 2:Delete a costumer account"
-               +"\n 3:Get a costumer's details"
+               +"\n 3:Get the costumer list"
                +"\n 4:Change a costumer's bank account balance"
                +"\n 5:Log out\n")
     if choice=="1":
@@ -151,8 +156,7 @@ def Employee_menu():
     elif choice=="2":
         DeleteCostumerAccount()
     elif(choice=="3"):
-        print("nothing for now")
-        #GetCostumerDetails(accountnumber)
+        GetCostumerList()
     elif(choice=="4"):
         print("nothing for now")
         #ChangeAccountBalance(BankAccount)
