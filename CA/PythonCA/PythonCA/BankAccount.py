@@ -19,8 +19,8 @@ class BankAccount(object):
         self._balance+=n
 
     def Withdraw(self, n):
-        if(self._balance-n<0):
-            println("The account balance cannot be negative, please withdraw a lower amount.")
+        if(n<0):
+            n=-n
         else:
             self._balance-=n
 

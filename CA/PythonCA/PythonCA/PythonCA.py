@@ -1,12 +1,14 @@
 from Costumer import Costumer
 from SavingsAccount import SavingsAccount
 from CurrentAccount import CurrentAccount
+from BankAccount import BankAccount
+from datetime import datetime
 import os, glob
 import shutil
 import pickle
 from os import path
 
-#Loading our dynamic costumer database first
+#Loading/creating our dynamic costumer database first
 if path.exists('costumers.pkl'):
     with open('costumers.pkl','rb') as f:
             CostumerList = pickle.load(f)
@@ -37,17 +39,38 @@ def CheckValidEmail(email):
         valid=False
     return valid
 
+def CostumerCreation(firstname,lastname,email):
+    os.mkdir("Costumers/"+firstname+" "+lastname)
+    c=Costumer(firstname,lastname,email)
+    CostumerList.append(c)
+    savecostumerDB()
+    details=open("Costumers/"+firstname+" "+lastname+"/"+firstname+" "+lastname+"-details.txt","w+")
+    details.write(c.toString())
+    details.close()
+    savings=open("Costumers/"+firstname+" "+lastname+"/"+c.Accountnumber()+"-savings.txt","w+")
+    savings.write(c.Savings().toString())
+    savings.close()
+    current=open("Costumers/"+firstname+" "+lastname+"/"+c.Accountnumber()+"-current.txt","w+")
+    current.write(c.Current().toString())
+    current.close()
+    transactions=open("Costumers/"+firstname+" "+lastname+"/"+c.Accountnumber()+"-transactions.txt","w+")
+    transactions.close()
+
 def CreateCostumerAccount():
     firstname=input("Please enter the costumer's firstname.\n")
+    firstname=firstname.lower()
     while(CheckValidName(firstname)==False):
         firstname=input("This name is not valid, please enter a valid name.\n(Or enter 0 to go back to the Employee menu.)\n")
+        firstname=firstname.lower()
         if(firstname=="0"):
             print("")
             Employee_menu()
             return
     lastname=input("Please enter the costumer's lastname.\n")
+    lastname=lastname.lower()
     while(CheckValidName(lastname)==False):
         lastname=input("This name is not valid, please enter a valid name.\n(Or enter 0 to go back to the Employee menu.)\n")
+        lastname=lastname.lower()
         if(lastname=="0"):
             print("")
             Employee_menu()
@@ -65,34 +88,33 @@ def CreateCostumerAccount():
         Employee_menu()
         return
     else:
-        os.mkdir("Costumers/"+firstname+" "+lastname)
-        c=Costumer(firstname,lastname,email)
-        CostumerList.append(c)
-        savecosavecostumerDB()
-        details=open("Costumers/"+firstname+" "+lastname+"/"+firstname+" "+lastname+"-details.txt","w+")
-        details.write(c.toString())
-        details.close()
-        savings=open("Costumers/"+firstname+" "+lastname+"/"+c.Accountnumber()+"-savings.txt","w+")
-        savings.write(c.Savings().toString())
-        savings.close()
-        current=open("Costumers/"+firstname+" "+lastname+"/"+c.Accountnumber()+"-current.txt","w+")
-        current.write(c.Current().toString())
-        current.close()
+        CostumerCreation(firstname,lastname,email)
         print("Costumer account successfully created. Going back to the Employee menu")
         print("")
         Employee_menu()
 
+def CostumerDeletion(firstname,lastname):
+    for Costumer in CostumerList:
+            if(Costumer.Firstname()==firstname and Costumer.Lastname()==lastname):
+                shutil.rmtree("Costumers/"+firstname+" "+lastname)
+                CostumerList.remove(Costumer)
+                savecostumerDB()
+
 def DeleteCostumerAccount():
     firstname=input("Please enter the costumer's firstname.\n")
+    firstname=firstname.lower()
     while(CheckValidName(firstname)==False):
         firstname=input("This name is not valid, please enter a valid name.\n(Or enter 0 to go back to the Employee menu.)\n")
+        firstname=firstname.lower()
         if(firstname=="0"):
             print("")
             Employee_menu()
             return
     lastname=input("Please enter the costumer's lastname.\n")
+    lastname=lastname.lower()
     while(CheckValidName(lastname)==False):
         lastname=input("This name is not valid, please enter a valid name.\n(Or enter 0 to go back to the Employee menu.)\n")
+        lastname=lastname.lower()
         if(lastname=="0"):
             print("")
             Employee_menu()
@@ -123,6 +145,8 @@ def GetCostumerList():
     for Costumer in CostumerList:
         print(Costumer.Firstname()+" "+Costumer.Lastname()+"  account number:"+Costumer.Accountnumber()+"  current:"
               + str(Costumer.Current().Balance())+ "  savings:"+str(Costumer.Savings().Balance()))
+    print("")
+    Employee_menu()
 
 def Employee_login():
     #extra anti brute force measure (made for fun)
@@ -144,6 +168,175 @@ def Employee_login():
             print("nothing for now")
             Employee_menu()
 
+def ChangeBalance(costumer):
+    choice=input("What do you wish to do?"
+                +"\n1:Change the current account's balance."
+                +"\n2:Change the savings account's balance. \n")
+    while(choice!="1" and choice!="2"):
+        choice=input("You must enter either 1, 2 or 0 if you wish to go back to the employee menu.\n")
+        if(choice=="0"):
+            print("")
+            Employee_menu()
+            return
+    if choice=="1":
+        choice2=input("What action do you wish to do?"
+                     +"\n1:Add money to that account."
+                     +"\n2:Withdraw money from that account.\n")
+        while(choice2!="1" and choice2!="2"):
+            choice2=input("You must enter either 1, 2 or 0 if you wish to go back to the employee menu.\n")
+            if(choice2=="0"):
+                print("")
+                Employee_menu()
+                return
+        if choice2=="1":
+            amount=float(input("Please enter the amount you wish to add: "))
+            while(amount < 0):
+                amount=float(input("You cannot add a negative amount, please enter a positive amount. (or enter 0 to go back to the Employee menu).\n"))
+                if(amount==0.0):
+                    print("")
+                    Employee_menu()
+                    return                 
+            amount=round(amount,2)
+            costumer.Current().Add(amount)
+            with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-current.txt","r") as cfile:
+                data=cfile.readlines()
+            data[0]=costumer.Current().toString()+"\n"
+            with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-current.txt","w") as cfile:
+                cfile.writelines(data)
+                cfile.write("\n"+datetime.now().strftime("%d/%m/%Y %H:%M:%S")+" +"+str(amount)+"€  ->"+str(costumer.Current().Balance())+"€")
+            with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-transactions.txt","r") as tfile:
+                data=tfile.readlines()
+            with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-transactions.txt","w") as tfile:
+                tfile.writelines(data)
+                tfile.write("\n"+costumer.Current().Name()+" "+datetime.now().strftime("%d/%m/%Y %H:%M:%S")+" +"+str(amount)+"€  ->"+str(costumer.Current().Balance())+"€")
+            with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Firstname()+" "+costumer.Lastname()+"-details.txt","w") as details:
+                details.write(costumer.toString())
+            savecostumerDB()
+            print("Succesfully added "+str(amount)+"€ to that account. Going back to the Employee menu. \n")
+            Employee_menu()
+            return
+        if choice2=="2":
+            amount=float(input("Please enter the amount you wish to withdraw: "))
+            while(amount>costumer.Current().Balance()):
+                print("The balance cannot be negative, please withdraw a lower amount (or enter 0 to go back to the Employee menu).\n")
+                amount=float(input(""))
+                if(amount==0.0):
+                    print("")
+                    Employee_menu()
+                    return
+            amount=round(amount,2)
+            costumer.Current().Withdraw(amount)
+            with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-current.txt","r") as cfile:
+                data=cfile.readlines()
+            data[0]=costumer.Current().toString()+"\n"
+            with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-current.txt","w") as cfile:
+                cfile.writelines(data)
+                cfile.write("\n"+datetime.now().strftime("%d/%m/%Y %H:%M:%S")+" -"+str(amount)+"€  ->"+str(costumer.Current().Balance())+"€")
+            with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-transactions.txt","r") as tfile:
+                data=tfile.readlines()
+            with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-transactions.txt","w") as tfile:
+                tfile.writelines(data)
+                tfile.write("\n"+costumer.Current().Name()+" "+datetime.now().strftime("%d/%m/%Y %H:%M:%S")+" -"+str(amount)+"€  ->"+str(costumer.Current().Balance())+"€")
+            with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Firstname()+" "+costumer.Lastname()+"-details.txt","w") as details:
+                details.write(costumer.toString())
+            savecostumerDB()
+            print("Succesfully withdrew "+str(amount)+"€ from that account. Going back to the Employee menu. \n")
+            Employee_menu()
+    if choice=="2":
+        choice2=input("What action do you wish to do?"
+                     +"\n1:Add money to that account."
+                     +"\n2:Withdraw money from that account. \n")
+        while(choice2!="1" and choice2!="2"):
+            choice=input("You must enter either 1, 2 or 0 if you wish to go back to the employee menu. \n")
+            if(choice=="0"):
+                print("")
+                Employee_menu()
+                return
+        if choice2=="1":
+            amount=float(input("Please enter the amount you wish to add: "))
+            while(amount < 0):
+                amount=float(input("You cannot add a negative amount, please enter a positive amount. (or enter 0 to go back to the Employee menu).\n"))
+                if(amount==0.0):
+                    print("")
+                    Employee_menu()
+                    return                 
+            amount=round(amount,2)
+            costumer.Savings().Add(amount)
+            with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-savings.txt","r") as cfile:
+                data=cfile.readlines()
+            data[0]=costumer.Savings().toString()+"\n"
+            with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-savings.txt","w") as cfile:
+                cfile.writelines(data)
+                cfile.write("\n"+datetime.now().strftime("%d/%m/%Y %H:%M:%S")+" +"+str(amount)+"€  ->"+str(costumer.Savings().Balance())+"€")
+            with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-transactions.txt","r") as tfile:
+                data=tfile.readlines()
+            with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-transactions.txt","w") as tfile:
+                tfile.writelines(data)
+                tfile.write("\n"+costumer.Savings().Name()+" "+datetime.now().strftime("%d/%m/%Y %H:%M:%S")+" +"+str(amount)+"€  ->"+str(costumer.Savings().Balance())+"€")
+            with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Firstname()+" "+costumer.Lastname()+"-details.txt","w") as details:
+                details.write(costumer.toString())
+            savecostumerDB()
+            print("Succesfully added "+str(amount)+"€ to that account. Going back to the Employee menu. \n")
+            Employee_menu()
+            return
+        if choice2=="2":
+            amount=float(input("Please enter the amount you wish to withdraw: "))
+            while(amount>costumer.Savings().Balance()):
+                print("The balance cannot be negative, please withdraw a lower amount (or enter 0 to go back to the Employee menu).\n")
+                amount=float(input(""))
+                if(amount==0.0):
+                    print("")
+                    Employee_menu()
+                    return
+            amount=round(amount,2)
+            costumer.Savings().Withdraw(amount)
+            with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-savings.txt","r") as cfile:
+                data=cfile.readlines()
+            data[0]=costumer.Savings().toString()+"\n"
+            with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-savings.txt","w") as cfile:
+                cfile.writelines(data)
+                cfile.write("\n"+datetime.now().strftime("%d/%m/%Y %H:%M:%S")+" -"+str(amount)+"€  ->"+str(costumer.Savings().Balance())+"€")
+            with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-transactions.txt","r") as tfile:
+                data=tfile.readlines()
+            with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-transactions.txt","w") as tfile:
+                tfile.writelines(data)
+                tfile.write("\n"+costumer.Savings().Name()+" "+datetime.now().strftime("%d/%m/%Y %H:%M:%S")+" -"+str(amount)+"€  ->"+str(costumer.Savings().Balance())+"€")
+            with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Firstname()+" "+costumer.Lastname()+"-details.txt","w") as details:
+                details.write(costumer.toString())
+            savecostumerDB()
+            print("Succesfully withdrew "+str(amount)+"€ from that account. Going back to the Employee menu. \n")
+            Employee_menu()
+   
+def ChangeAccountBalance():
+    firstname=input("Please enter the costumer's firstname.\n")
+    firstname=firstname.lower()
+    while(CheckValidName(firstname)==False):
+        firstname=input("This name is not valid, please enter a valid name.\n(Or enter 0 to go back to the Employee menu.)\n")
+        firstname=firstname.lower()
+        if(firstname=="0"):
+            print("")
+            Employee_menu()
+            return
+    lastname=input("Please enter the costumer's lastname.\n")
+    lastname=lastname.lower()
+    while(CheckValidName(lastname)==False):
+        lastname=input("This name is not valid, please enter a valid name.\n(Or enter 0 to go back to the Employee menu.)\n")
+        lastname=lastname.lower()
+        if(lastname=="0"):
+            print("")
+            Employee_menu()
+            return
+    if(path.exists("Costumers/"+firstname+" "+lastname)==False):
+        print("This costumer is not registered. Going back to the Employee menu")
+        print("")
+        Employee_menu()
+        return
+    else:
+        for Costumer in CostumerList:
+            if(Costumer.Firstname()==firstname and Costumer.Lastname()==lastname):
+                ChangeBalance(Costumer)
+
+
 def Employee_menu():
     choice=input("What action do you wish to do:"
                +"\n 1:Create a new costumer account"
@@ -158,8 +351,7 @@ def Employee_menu():
     elif(choice=="3"):
         GetCostumerList()
     elif(choice=="4"):
-        print("nothing for now")
-        #ChangeAccountBalance(BankAccount)
+        ChangeAccountBalance()
     elif(choice=="5"):
         print("Going back to the main menu\n")
         main_menu()
@@ -195,9 +387,34 @@ def pickletest():
     for Costumer in CostumerList:
         print(Costumer.toString())
 
+def datetimetest():
+    now=datetime.now()
+    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+    print(now)
+    print(dt_string)
+
+def btest():
+    for Costumer in CostumerList:
+        if (Costumer.Firstname()=="larry" and Costumer.Lastname()=="hogard"):
+                print(Costumer.toString())
+                ChangeBalance(Costumer)
+
+
+def readlinetest():
+    with open("test.txt","r") as file:
+        data=file.readlines()
+    data[0]="Nada\n"
+    with open("test.txt","w") as file:
+        file.writelines(data)
+        file.write("\nextra")
 #print(CheckValidName("Hervé-Henri"))
 #print(CheckValidEmail("23857@student.dorset-college.ie"))
-pickletest()
+#pickletest()
+#datetimetest()
+#readlinetest()
+#btest()
 main_menu()
+
+
 
 

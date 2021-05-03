@@ -1,0 +1,4 @@
+Firstname: janda    Lastname: wanda    Email: janda.wanda@wakanda.com
+Account number: jw-10-10-23    Pin code: 1023
+Savings account: Account name: jw-10-10-23-savings   Account balance:0.0 €
+Current account: Account name: jw-10-10-23-current   Account balance:0.0 €

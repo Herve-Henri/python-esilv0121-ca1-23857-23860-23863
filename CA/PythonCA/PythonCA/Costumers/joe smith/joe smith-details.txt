@@ -1,0 +1,4 @@
+Firstname: joe    Lastname: smith    Email: j.smith@gmail.com
+Account number: js-8-10-19    Pin code: 1019
+Savings account: Account name: js-8-10-19-savings   Account balance:4600.0 €
+Current account: Account name: js-8-10-19-current   Account balance:650.0 €
