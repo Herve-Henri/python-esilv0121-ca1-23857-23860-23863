@@ -77,7 +77,7 @@ def CreateCostumerAccount():
             return
     email=input("Please enter the costumer's email.\n")
     while(CheckValidEmail(email)==False):
-        email=input("This name is not valid, please enter a valid name.\n(Or enter 0 to go back to the Employee menu.)\n")
+        email=input("This email is not valid, please enter a valid email.\n(Or enter 0 to go back to the Employee menu.)\n")
         if(email=="0"):
             print("")
             Employee_menu()

@@ -1,0 +1,4 @@
+Firstname: david    Lastname: dereve    Email: dav.dereve@gmail.com
+Account number: dd-11-04-04    Pin code: 0404
+Savings account: Account name: dd-11-04-04-savings   Account balance:0.0 €
+Current account: Account name: dd-11-04-04-current   Account balance:0.0 €
