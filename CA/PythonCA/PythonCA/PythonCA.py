@@ -141,6 +141,18 @@ def DeleteCostumerAccount():
                     Employee_menu()
                     return
 
+def GetSavingAccountHistory():
+    for Costumer in CostumerList:
+        print("savings:"+str(Costumer.Savings().Balance()))
+    print("")
+    Costumer_menu()
+
+def GetCurrentAccountHistory():
+    for Costumer in CostumerList:
+        print("current:"+ str(Costumer.Current().Balance()))
+    print("")
+    Costumer_menu()
+
 def GetCostumerList():
     for Costumer in CostumerList:
         print(Costumer.Firstname()+" "+Costumer.Lastname()+"  account number:"+Costumer.Accountnumber()+"  current:"
@@ -336,7 +348,6 @@ def ChangeAccountBalance():
             if(Costumer.Firstname()==firstname and Costumer.Lastname()==lastname):
                 ChangeBalance(Costumer)
 
-
 def Employee_menu():
     choice=input("What action do you wish to do:"
                +"\n 1:Create a new costumer account"
@@ -359,6 +370,76 @@ def Employee_menu():
          print("You must enter a digit between 1 and 5 \nPlease try again")
          Employee_menu()
 
+def Costumer_menu():
+    choice=input("What action do you wish to do:"
+               +"\n 1:Get the transaction history"
+               +"\n 2:Add money to your account"
+               +"\n 3:Withdraw from your account"              
+               +"\n 4:Log out\n")
+    while(choice!="1" and choice!="2" and choice!="3" and choice!="4"):
+        choice=input("You must enter either 1, 2, 3, 4 or 0 if you wish to go back to the menu.\n")
+        if(choice=="0"):
+            print("")
+            main_menu()
+            return
+    if choice=="1":
+         choice1=input("What do you wish to do?"
+                +"\n1:Get from the current account's balance."
+                +"\n2:Get from the savings account's balance. \n")
+         while(choice1!="1" and choice1!="2"):
+            choice1=input("You must enter either 1, 2 or 0 if you wish to go back to the costumer menu.\n")
+            if(choice1=="0"):
+                print("")
+                Costumer_menu()
+            elif(choice1=='1'):
+                GetSavingAccountHistory()
+            elif(choice1=='2'):
+                GetCurrentAccountHistory()
+            else:
+                choice1=input("What do you wish to do?"
+                +"\n1:Get from the current account's balance."
+                +"\n2:Get from the savings account's balance. \n")
+            return
+    elif choice=="2":
+        choice2=input("What do you wish to do?"
+                +"\n1:Add money to the current account."
+                +"\n2:Add money to the savings account. \n")
+        while(choice2!="1" and choice2!="2"):
+            choice2=input("You must enter either 1, 2 or 0 if you wish to go back to the costumer menu.\n")
+            if(choice2=="0"):
+                print("")
+                Costumer_menu()
+            elif(choice2=="1"):
+                ############
+            elif(choice2=="2"):
+                ############
+            else:
+                choice2=input("What do you wish to do?"
+                +"\n1:Add money to the current account."
+                +"\n2:Add money to the savings account. \n")
+    elif(choice=="3"):
+        choice3=input("What do you wish to do?"
+                +"\n1:Withdraw money from the current account."
+                +"\n2:Withdraw money from the savings account. \n")
+        while(choice3!="1" and choice3!="2"):
+            choice3=input("You must enter either 1, 2 or 0 if you wish to go back to the costumer menu.\n")
+            if(choice3=="0"):
+                print("")
+                Costumer_menu()
+            elif(choice3=="1"):
+                ############
+            elif(choice3=="2"):
+                ############
+            else:
+                choice3=input("What do you wish to do?"
+                +"\n1:Withdraw money from the current account."
+                +"\n2:Withdraw money from the savings account. \n")
+    elif(choice=="4"):
+      print("Going back to the main menu\n")
+      main_menu()
+    else:
+         print("You must enter a digit between 1 and 4 \nPlease try again")
+         Customer_menu()
 
 def main_menu():
     print("********************Welcome To Dorset-Bank********************\n"
