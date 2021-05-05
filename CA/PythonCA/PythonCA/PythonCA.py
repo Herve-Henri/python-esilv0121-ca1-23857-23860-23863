@@ -177,6 +177,21 @@ def Employee_login():
         if choice=="A1234":           
             Employee_menu()
 
+def Costumer_login():
+    a=input("Please enter your first name\n")
+    a=a.lower()
+    b=input("Please enter your last name \n")
+    b=b.lower()
+    account_number=str(input("Please enter your account number \n" ))
+    pincode=int(input("Please enter your pincode \n"))
+    if(path.exists("Costumers/"+a+" "+b)==False):
+        print('This account does not exist')
+    else:
+        if (account_number==Costumer.GenerateAccountNumber(a,b)) and (pincode==Costumer.GeneratePincode(a,b)):
+            Costumer_menu() 
+        else:
+            print("Account number or pincode incorrect")
+
 def ChangeBalance(costumer):
     choice=input("What do you wish to do?"
                 +"\n1:Change the current account's balance."
@@ -542,7 +557,7 @@ def main_menu():
                 +"*          2: Employee                                       *\n"
                 +"**************************************************************\n")
     if choice=="1":
-        Costumer_menu()
+        Costumer_login()
     elif choice=="2":
         Employee_login()
     else:
