@@ -539,73 +539,7 @@ def Costumer_menu():
                 +"\n2:Get from the savings account's balance. \n")
             return
     elif choice=="2":
-
-        choice2=input("What do you wish to do?"
-                +"\n1:Add money to the current account."
-                +"\n2:Add money to the savings account. \n")
-        while(choice2!="1" and choice2!="2"):
-            choice2=input("You must enter either 1, 2 or 0 if you wish to go back to the costumer menu.\n")
-            if(choice2=="0"):
-                print("")
-                Costumer_menu()
-            elif(choice2=="1"):
-                amount=float(input("Please enter the amount you wish to add: "))
-                while(amount < 0):
-                    amount=float(input("You cannot add a negative amount, please enter a positive amount. (or enter 0 to go back to the Employee menu).\n"))
-                    if(amount==0.0):
-                        print("")
-                        Employee_menu()
-                        return                 
-                amount=round(amount,2)
-                costumer.Current().Add(amount)
-                with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-current.txt","r") as cfile:
-                    data=cfile.readlines()
-                data[0]=costumer.Current().toString()+"\n"
-                with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-current.txt","w") as cfile:
-                    cfile.writelines(data)
-                    cfile.write("\n"+datetime.now().strftime("%d/%m/%Y %H:%M:%S")+" +"+str(amount)+"€  ->"+str(costumer.Current().Balance())+"€")
-                with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-transactions.txt","r") as tfile:
-                    data=tfile.readlines()
-                with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-transactions.txt","w") as tfile:
-                    tfile.writelines(data)
-                    tfile.write("\n"+costumer.Current().Name()+" "+datetime.now().strftime("%d/%m/%Y %H:%M:%S")+" +"+str(amount)+"€  ->"+str(costumer.Current().Balance())+"€")
-                with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Firstname()+" "+costumer.Lastname()+"-details.txt","w") as details:
-                    details.write(costumer.toString())
-                savecostumerDB()
-                print("Succesfully added "+str(amount)+"€ to that account. Going back to the Employee menu. \n")
-                Costumer_menu()
-                return
-            elif(choice2=="2"):  
-                amount=float(input("Please enter the amount you wish to add: "))
-                while(amount < 0):
-                    amount=float(input("You cannot add a negative amount, please enter a positive amount. (or enter 0 to go back to the Employee menu).\n"))
-                    if(amount==0.0):
-                        print("")
-                        Employee_menu()
-                        return                 
-                amount=round(amount,2)
-                costumer.Current().Add(amount)
-                with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-current.txt","r") as cfile:
-                    data=cfile.readlines()
-                data[0]=costumer.Current().toString()+"\n"
-                with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-current.txt","w") as cfile:
-                    cfile.writelines(data)
-                    cfile.write("\n"+datetime.now().strftime("%d/%m/%Y %H:%M:%S")+" +"+str(amount)+"€  ->"+str(costumer.Current().Balance())+"€")
-                with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-transactions.txt","r") as tfile:
-                    data=tfile.readlines()
-                with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-transactions.txt","w") as tfile:
-                    tfile.writelines(data)
-                    tfile.write("\n"+costumer.Current().Name()+" "+datetime.now().strftime("%d/%m/%Y %H:%M:%S")+" +"+str(amount)+"€  ->"+str(costumer.Current().Balance())+"€")
-                with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Firstname()+" "+costumer.Lastname()+"-details.txt","w") as details:
-                    details.write(costumer.toString())
-                savecostumerDB()
-                print("Succesfully added "+str(amount)+"€ to that account. Going back to the Employee menu. \n")
-                Costumer_menu()
-                return
-            else:
-                choice2=input("What do you wish to do?"
-                +"\n1:Add money to the current account."
-                +"\n2:Add money to the savings account. \n")
+        ChangeBalanceCostumer(Costumer)
     elif(choice=="3"):
       print("Going back to the main menu\n")
       main_menu()
