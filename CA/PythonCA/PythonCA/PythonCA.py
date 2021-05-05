@@ -174,8 +174,7 @@ def Employee_login():
             else:
                 print("Incorrect password. "+str(4-n)+" attempt(s) remaining.")
                 choice=input("")
-        if choice=="A1234":
-            print("nothing for now")
+        if choice=="A1234":           
             Employee_menu()
 
 def ChangeBalance(costumer):
@@ -490,39 +489,29 @@ def Costumer_menu():
                +"\n 1:Get the transaction history"
                +"\n 2:Add/Withdraw money to/from your accounts"
                +"\n 3:Log out\n") 
-    while(choice!="1" and choice!="2" and choice!="3" and choice!="4"):
-        choice=input("You must enter either 1, 2, 3 or 0 if you wish to go back to the menu.\n")
-        if(choice=="0"):
-            print("")
-            main_menu()
-            return
     if choice=="1":
-         choice1=input("What do you wish to do?"
-                +"\n1:Get from the current account's balance."
-                +"\n2:Get from the savings account's balance. \n")
-         while(choice1!="1" and choice1!="2"):
-            choice1=input("You must enter either 1, 2 or 0 if you wish to go back to the costumer menu.\n")
+        choice1=input("What action do you wish to do:"
+                   +"\n 1:Get the transaction history from current's account"
+                   +"\n 2:Get the transaction history from saving's account\n")
+        while(choice1!="1" and choice1!="2"):
+            choice1=input("You must enter either 1, 2 or 0 if you wish to go back to the menu.\n")
             if(choice1=="0"):
-                print("")
-                Costumer_menu()
-            elif(choice1=='1'):
-                GetSavingAccountHistory()
-            elif(choice1=='2'):
-                GetCurrentAccountHistory()
-            else:
-                choice1=input("What do you wish to do?"
-                +"\n1:Get from the current account's balance."
-                +"\n2:Get from the savings account's balance. \n")
-            return
-
+                    print("")
+                    main_menu()                    
+            elif(choice1=="1"):
+                GetCostumerList()
+                #GetSavingAccountHistory()
+            elif(choice1=="2"):
+                GetCostumerList()
+                #GetCurrentAccountHistory()
     elif choice=="2":
         ChangeBalanceCostumer(Costumer)
-    elif(choice=="3"):
-      print("Going back to the main menu\n")
-      main_menu()
+    elif choice=="3":
+          print("Going back to the main menu\n")
+          main_menu()
     else:
-         print("You must enter a digit between 1 and 4 \nPlease try again")
-         Customer_menu()
+        print("You must enter a digit between 1 and 3 \nPlease try again")
+        Costumer_menu()
 
 def Employee_menu():
     choice=input("What action do you wish to do:"
