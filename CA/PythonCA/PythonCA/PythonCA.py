@@ -478,6 +478,102 @@ def ChangeBalanceCostumer(costumer):
             print("Succesfully withdrew "+str(amount)+"€ from that account. Going back to the Costumer menu. \n")
             Costumer_menu(costumer)
    
+def TransferFunds(costumer):
+    choice=input("You have chosen to transfer funds from one account to another."
+              +"\nPlease chose one of the two following options."
+              +"\n1:Transfer funds from savings to current."
+              +"\n2:Transfer funds from current to savings.\n")
+    while(choice!="1" and choice!="2"):
+        choice=input("You must enter either 1 or 2, if you wish to go back to the costumer menu enter 0. \n")
+        if(choice=="0"):
+            print("")
+            Costumer_menu(costumer)
+            return
+    if choice=="1":
+        amount=float(input("You currently have "+str(costumer.Savings().Balance())+"€ on your savings account."
+                  +"\nPlease enter the amount you wish to transfer to your current account:\n"))
+        while(amount<0):
+            amount=float(input("Please enter a positive amount.\n"))
+        while(amount>costumer.Savings().Balance()):
+            amount=float(input("You do not have enough money on your savings account. Please lower the amount.\n"))
+        amount=round(amount,2)
+        if(amount==0.0):
+            print("")
+            Costumer_menu(costumer)
+            return
+        costumer.Savings().Withdraw(amount)
+        costumer.Current().Add(amount)
+        with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-savings.txt","r") as cfile:
+                data=cfile.readlines()
+                data[0]=costumer.Savings().toString()+"\n"
+        with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-savings.txt","w") as cfile:
+                cfile.writelines(data)
+                cfile.write("\n"+datetime.now().strftime("%d/%m/%Y %H:%M:%S")+" -"+str(amount)+"€  ->"+str(costumer.Savings().Balance())+"€")
+        with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-transactions.txt","r") as tfile:
+                data=tfile.readlines()
+        with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-transactions.txt","w") as tfile:
+                tfile.writelines(data)
+                tfile.write("\n"+costumer.Savings().Name()+" "+datetime.now().strftime("%d/%m/%Y %H:%M:%S")+" -"+str(amount)+"€  ->"+str(costumer.Savings().Balance())+"€")
+        with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-current.txt","r") as cfile:
+                data=cfile.readlines()
+                data[0]=costumer.Current().toString()+"\n"
+        with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-current.txt","w") as cfile:
+                cfile.writelines(data)
+                cfile.write("\n"+datetime.now().strftime("%d/%m/%Y %H:%M:%S")+" +"+str(amount)+"€  ->"+str(costumer.Current().Balance())+"€")
+        with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-transactions.txt","r") as tfile:
+                data=tfile.readlines()
+        with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-transactions.txt","w") as tfile:
+                tfile.writelines(data)
+                tfile.write("\n"+costumer.Current().Name()+" "+datetime.now().strftime("%d/%m/%Y %H:%M:%S")+" +"+str(amount)+"€  ->"+str(costumer.Current().Balance())+"€")
+        with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Firstname()+" "+costumer.Lastname()+"-details.txt","w") as details:
+                details.write(costumer.toString())
+        savecostumerDB()
+        print("Successfully transferred "+str(amount)+"€ from your savings account to your current account.")
+        Costumer_menu(costumer)
+        return
+    if(choice=="2"):
+        amount=float(input("You currently have "+str(costumer.Current().Balance())+"€ on your current account."
+                  +"\nPlease enter the amount you wish to transfer to your current account:\n"))
+        while(amount<0):
+            amount=float(input("Please enter a positive amount.\n"))
+        while(amount>costumer.Current().Balance()):
+            amount=float(input("You do not have enough money on your savings account. Please lower the amount.\n"))
+        amount=round(amount,2)
+        if(amount==0.0):
+            print("")
+            Costumer_menu(costumer)
+            return
+        costumer.Current().Withdraw(amount)
+        costumer.Savings().Add(amount)
+        with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-current.txt","r") as cfile:
+                data=cfile.readlines()
+                data[0]=costumer.Savings().toString()+"\n"
+        with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-current.txt","w") as cfile:
+                cfile.writelines(data)
+                cfile.write("\n"+datetime.now().strftime("%d/%m/%Y %H:%M:%S")+" -"+str(amount)+"€  ->"+str(costumer.Current().Balance())+"€")
+        with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-transactions.txt","r") as tfile:
+                data=tfile.readlines()
+        with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-transactions.txt","w") as tfile:
+                tfile.writelines(data)
+                tfile.write("\n"+costumer.Savings().Name()+" "+datetime.now().strftime("%d/%m/%Y %H:%M:%S")+" -"+str(amount)+"€  ->"+str(costumer.Current().Balance())+"€")
+        with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-savings.txt","r") as cfile:
+                data=cfile.readlines()
+                data[0]=costumer.Current().toString()+"\n"
+        with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-savings.txt","w") as cfile:
+                cfile.writelines(data)
+                cfile.write("\n"+datetime.now().strftime("%d/%m/%Y %H:%M:%S")+" +"+str(amount)+"€  ->"+str(costumer.Savings().Balance())+"€")
+        with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-transactions.txt","r") as tfile:
+                data=tfile.readlines()
+        with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-transactions.txt","w") as tfile:
+                tfile.writelines(data)
+                tfile.write("\n"+costumer.Current().Name()+" "+datetime.now().strftime("%d/%m/%Y %H:%M:%S")+" +"+str(amount)+"€  ->"+str(costumer.Savings().Balance())+"€")
+        with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Firstname()+" "+costumer.Lastname()+"-details.txt","w") as details:
+                details.write(costumer.toString())
+        savecostumerDB()
+        print("Successfully transferred "+str(amount)+"€ from your current account to your savings account.")
+        Costumer_menu(costumer)
+        return
+
 def ChangeAccountBalance():
     firstname=input("Please enter the costumer's firstname.\n")
     firstname=firstname.lower()
@@ -512,7 +608,8 @@ def Costumer_menu(costumer):
                +"What action do you wish to do:"
                +"\n 1:Get the transaction history."
                +"\n 2:Add/Withdraw money to/from your accounts"
-               +"\n 3:Log out\n") 
+               +"\n 3:Transfer money from one account to another."
+               +"\n 4:Log out\n") 
     if choice=="1":
         choice1=input("What action do you wish to do:"
                    +"\n 1:Get the transaction history from your current account."
@@ -529,19 +626,27 @@ def Costumer_menu(costumer):
                 content=currentfile.read()
                 print(content)
                 currentfile.close()
+                print("")
+                Costumer_menu(costumer)
         elif(choice1=="2"):
             with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-savings.txt","r") as savingsfile:
                 content=savingsfile.read()
                 print(content)
                 savingsfile.close()
+                print("")
+                Costumer_menu(costumer)
         elif(choice1=="3"):
             with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-transactions.txt","r") as transactionsfile:
                   content=transactionsfile.read()
                   print(content)
                   transactionsfile.close()
+                  print("")
+                  Costumer_menu(costumer)
     elif choice=="2":
         ChangeBalanceCostumer(costumer)
     elif choice=="3":
+        TransferFunds(costumer)
+    elif choice=="4":
         print("Going back to the main menu.\n")
         main_menu()
         return

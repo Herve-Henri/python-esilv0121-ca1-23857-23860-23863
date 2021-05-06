@@ -1,4 +1,4 @@
 Firstname: dumbo    Lastname: jumbo    Email: dumbo.jumbo@bobombomailo.com
 Account number: dj-10-04-10    Pin code: 0410
 Savings account: Account name: dj-10-04-10-savings   Account balance:0.0 €
-Current account: Account name: dj-10-04-10-current   Account balance:0.0 €
+Current account: Account name: dj-10-04-10-current   Account balance:500.0 €

@@ -1,0 +1,4 @@
+Firstname: leo    Lastname: bridge    Email: l.bridge@gmail.com
+Account number: lb-9-12-02    Pin code: 1202
+Savings account: Account name: lb-9-12-02-savings   Account balance:0.0 €
+Current account: Account name: lb-9-12-02-current   Account balance:0.0 €
