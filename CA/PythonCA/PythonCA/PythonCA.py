@@ -178,19 +178,27 @@ def Employee_login():
             Employee_menu()
 
 def Costumer_login():
-    a=input("Please enter your first name\n")
+    a=input("Please enter your first name.\n")
     a=a.lower()
-    b=input("Please enter your last name \n")
+    b=input("Please enter your last name.\n")
     b=b.lower()
-    account_number=str(input("Please enter your account number \n" ))
-    pincode=int(input("Please enter your pincode \n"))
+    account_number=input("Please enter your account number \n" )
+    pincode=input("Please enter your pincode \n")
     if(path.exists("Costumers/"+a+" "+b)==False):
-        print('This account does not exist')
+        print('This account is not registered, going back to the main menu.\n')
+        print("")
+        main_menu()
+        return
     else:
-        if (account_number==Costumer.GenerateAccountNumber(a,b)) and (pincode==Costumer.GeneratePincode(a,b)):
-            Costumer_menu() 
+        if (account_number==Costumer.GenerateAccountNumber(a,b)) and (pincode==Costumer.GeneratePinCode(a,b)):
+            for costumer in CostumerList:
+                if(costumer.Firstname()==a and costumer.Lastname()==b):
+                    Costumer_menu(costumer)
         else:
-            print("Account number or pincode incorrect")
+            print("Account number or pincode incorrect. Going back to the main menu.")
+            print("")
+            main_menu()
+            return
 
 def ChangeBalance(costumer):
     choice=input("What do you wish to do?"
@@ -339,7 +347,7 @@ def ChangeBalanceCostumer(costumer):
         choice=input("You must enter either 1, 2 or 0 if you wish to go back to the Costumer menu.\n")
         if(choice=="0"):
             print("")
-            Costumer_menu()
+            Costumer_menu(costumer)
             return
     if choice=="1":
         choice2=input("What action do you wish to do?"
@@ -349,7 +357,7 @@ def ChangeBalanceCostumer(costumer):
             choice2=input("You must enter either 1, 2 or 0 if you wish to go back to the Costumer menu.\n")
             if(choice2=="0"):
                 print("")
-                Costumer_menu()
+                Costumer_menu(costumer)
                 return
         if choice2=="1":
             amount=float(input("Please enter the amount you wish to add: "))
@@ -357,7 +365,7 @@ def ChangeBalanceCostumer(costumer):
                 amount=float(input("You cannot add a negative amount, please enter a positive amount. (or enter 0 to go back to the Costumer menu).\n"))
                 if(amount==0.0):
                     print("")
-                    Costumer_menu()
+                    Costumer_menu(costumer)
                     return                 
             amount=round(amount,2)
             costumer.Current().Add(amount)
@@ -376,7 +384,7 @@ def ChangeBalanceCostumer(costumer):
                 details.write(costumer.toString())
             savecostumerDB()
             print("Succesfully added "+str(amount)+"€ to that account. Going back to the Costumer menu. \n")
-            Costumer_menu()
+            Costumer_menu(costumer)
             return
         if choice2=="2":
             amount=float(input("Please enter the amount you wish to withdraw: "))
@@ -385,7 +393,7 @@ def ChangeBalanceCostumer(costumer):
                 amount=float(input(""))
                 if(amount==0.0):
                     print("")
-                    Costumer_menu()
+                    Costumer_menu(costumer)
                     return
             amount=round(amount,2)
             costumer.Current().Withdraw(amount)
@@ -404,7 +412,7 @@ def ChangeBalanceCostumer(costumer):
                 details.write(costumer.toString())
             savecostumerDB()
             print("Succesfully withdrew "+str(amount)+"€ from that account. Going back to the Costumer menu. \n")
-            Costumer_menu()
+            Costumer_menu(costumer)
     if choice=="2":
         choice2=input("What action do you wish to do?"
                      +"\n1:Add money to that account."
@@ -413,7 +421,7 @@ def ChangeBalanceCostumer(costumer):
             choice=input("You must enter either 1, 2 or 0 if you wish to go back to the Costumer menu. \n")
             if(choice=="0"):
                 print("")
-                Costumer_menu()
+                Costumer_menu(costumer)
                 return
         if choice2=="1":
             amount=float(input("Please enter the amount you wish to add: "))
@@ -421,7 +429,7 @@ def ChangeBalanceCostumer(costumer):
                 amount=float(input("You cannot add a negative amount, please enter a positive amount. (or enter 0 to go back to the Costumer menu).\n"))
                 if(amount==0.0):
                     print("")
-                    Costumer_menu()
+                    Costumer_menu(costumer)
                     return                 
             amount=round(amount,2)
             costumer.Savings().Add(amount)
@@ -440,7 +448,7 @@ def ChangeBalanceCostumer(costumer):
                 details.write(costumer.toString())
             savecostumerDB()
             print("Succesfully added "+str(amount)+"€ to that account. Going back to the Costumer menu. \n")
-            Costumer_menu()
+            Costumer_menu(costumer)
             return
         if choice2=="2":
             amount=float(input("Please enter the amount you wish to withdraw: "))
@@ -449,7 +457,7 @@ def ChangeBalanceCostumer(costumer):
                 amount=float(input(""))
                 if(amount==0.0):
                     print("")
-                    Costumer_menu()
+                    Costumer_menu(costumer)
                     return
             amount=round(amount,2)
             costumer.Savings().Withdraw(amount)
@@ -468,7 +476,7 @@ def ChangeBalanceCostumer(costumer):
                 details.write(costumer.toString())
             savecostumerDB()
             print("Succesfully withdrew "+str(amount)+"€ from that account. Going back to the Costumer menu. \n")
-            Costumer_menu()
+            Costumer_menu(costumer)
    
 def ChangeAccountBalance():
     firstname=input("Please enter the costumer's firstname.\n")
@@ -499,34 +507,48 @@ def ChangeAccountBalance():
             if(Costumer.Firstname()==firstname and Costumer.Lastname()==lastname):
                 ChangeBalance(Costumer)
 
-def Costumer_menu():
-    choice=input("What action do you wish to do:"
-               +"\n 1:Get the transaction history"
+def Costumer_menu(costumer):
+    choice=input("\nWelcome "+costumer.Firstname()+" "+costumer.Lastname()+".\n"
+               +"What action do you wish to do:"
+               +"\n 1:Get the transaction history."
                +"\n 2:Add/Withdraw money to/from your accounts"
                +"\n 3:Log out\n") 
     if choice=="1":
         choice1=input("What action do you wish to do:"
-                   +"\n 1:Get the transaction history from current's account"
-                   +"\n 2:Get the transaction history from saving's account\n")
-        while(choice1!="1" and choice1!="2"):
-            choice1=input("You must enter either 1, 2 or 0 if you wish to go back to the menu.\n")
+                   +"\n 1:Get the transaction history from your current account."
+                   +"\n 2:Get the transaction history from your savings account."
+                   +"\n 3:Get the transaction history for all of your accounts.\n")
+        while(choice1!="1" and choice1!="2" and choice1!="3"):
+            choice1=input("You must enter either 1, 2, 3 or 0 if you wish to go back to the menu.\n")
             if(choice1=="0"):
                     print("")
-                    main_menu()                    
-            elif(choice1=="1"):
-                GetCostumerList()
-                #GetSavingAccountHistory()
-            elif(choice1=="2"):
-                GetCostumerList()
-                #GetCurrentAccountHistory()
+                    main_menu()  
+                    return
+        if(choice1=="1"):
+            with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-current.txt","r") as currentfile:
+                content=currentfile.read()
+                print(content)
+                currentfile.close()
+        elif(choice1=="2"):
+            with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-savings.txt","r") as savingsfile:
+                content=savingsfile.read()
+                print(content)
+                savingsfile.close()
+        elif(choice1=="3"):
+            with open("Costumers/"+costumer.Firstname()+" "+costumer.Lastname()+"/"+costumer.Accountnumber()+"-transactions.txt","r") as transactionsfile:
+                  content=transactionsfile.read()
+                  print(content)
+                  transactionsfile.close()
     elif choice=="2":
-        ChangeBalanceCostumer(Costumer)
+        ChangeBalanceCostumer(costumer)
     elif choice=="3":
-          print("Going back to the main menu\n")
-          main_menu()
+        print("Going back to the main menu.\n")
+        main_menu()
+        return
     else:
         print("You must enter a digit between 1 and 3 \nPlease try again")
-        Costumer_menu()
+        Costumer_menu(costumer)
+        return
 
 def Employee_menu():
     choice=input("What action do you wish to do:"
@@ -546,6 +568,7 @@ def Employee_menu():
     elif(choice=="5"):
         print("Going back to the main menu\n")
         main_menu()
+        return
     else:
          print("You must enter a digit between 1 and 5 \nPlease try again")
          Employee_menu()
