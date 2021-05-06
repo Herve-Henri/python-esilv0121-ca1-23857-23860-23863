@@ -542,12 +542,12 @@ def Costumer_menu(costumer):
     elif choice=="2":
         ChangeBalanceCostumer(costumer)
     elif choice=="3":
-          print("Going back to the main menu.\n")
-          main_menu()
-          return
+        print("Going back to the main menu.\n")
+        main_menu()
+        return
     else:
         print("You must enter a digit between 1 and 3 \nPlease try again")
-        Costumer_menu()
+        Costumer_menu(costumer)
         return
 
 def Employee_menu():
